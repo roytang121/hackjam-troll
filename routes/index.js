@@ -57,7 +57,7 @@ var describe = function(imageUrl, callback) {
         // if (!error && response.statusCode == 200) {
         callback(imageUrl, body);
         // }
-    });    
+    });
 };
 
 router.get('/analyze', function(req, res, next) {

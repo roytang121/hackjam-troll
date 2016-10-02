@@ -24,6 +24,11 @@
           <img src="images/TopBanner.png" width="960"/>
         </center>
       </div>
+      <div class="row">
+        <center>
+          <img src="images/Function1.png" width="960"/>
+        </center>
+      </div>
       <div class="row col-xs-10" style="float: none; margin: 0 auto;">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1"><b>f</b></span>
@@ -50,18 +55,18 @@
 
     <script type="text/javascript">
       $('#btn_troll').click(function() {
+
+        $(this).html("loading...");
         if (self.fetch) {
           var options = {
-            method: 'POST',
-            body: JSON.stringify({
-              url: 'http://www.foodmanufacture.co.uk/var/plain_site/storage/images/publications/food-beverage-nutrition/foodmanufacture.co.uk/npd/top-10-functional-food-trends/11097085-1-eng-GB/Top-10-functional-food-trends_strict_xxl.jpg'
-            })
+            method: 'GET'
           }
-          fetch('/descripe', options)
+          fetch('/analyze', options)
           .then(function(response) {
             response.json().then(function (json) {
               alert(JSON.stringify(json));
-            });
+              $(this).html("Done!");
+            }).bind(this);
           })
         }
       })
