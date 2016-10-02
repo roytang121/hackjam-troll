@@ -8,8 +8,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-const credentials = require('./credentials');
-
 var app = express();
 
 // view engine setup
@@ -58,6 +56,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-console.log(credentials.api_key);
 
 module.exports = app;
