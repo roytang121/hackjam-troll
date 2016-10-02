@@ -1,2 +1,0 @@
-# hackjam-troll
-hackjam project
