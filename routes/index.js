@@ -55,7 +55,7 @@ var describe = function(imageUrl, callback) {
 
     request(options, function (error, response, body) {
         // if (!error && response.statusCode == 200) {
-        callback(body);
+        callback(imageUrl, body);
         // }
     });    
 };
@@ -64,16 +64,35 @@ router.get('/analyze', function(req, res, next) {
     var photos = fs.readdirSync('./public/user-photos').filter(function(filename) {
         return filename.endsWith('.jpg');
     });
+
+    var keywords = [];
+    var freq = {};
+
     var counter = 0;
     for (var i = 0; i < photos.length; i ++) {
         console.log('http://52.163.59.105:8080/user-photos/' + photos[i]);
-        describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
-            console.log('described: ' + 'http://52.163.59.105:8080/user-photos/' + photos[i]);
-            res.write(body);
+        describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(imageUrl, body) {
+            console.log('described: ' + imageUrl);
+            //res.write(JSON.stringify(body));
+
+            var description = body.description;
+            var tags = description.tags;
+            keywords = keywords.concat(tags);
 
             counter ++;
             if (counter == photos.length) {
-                res.end();
+                //res.send(JSON.stringify(keywords));
+                //res.end();
+
+                for (var j = 0; j < keywords.length; j ++) {
+                    if (keywords[j] in freq) {
+                        freq[keywords[j]] ++;
+                    } else {
+                        freq[keywords[j]] = 1;
+                    }
+                }
+
+                res.send(JSON.stringify(freq));
             }
         });
     }
