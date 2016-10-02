@@ -1,5 +1,6 @@
 var express = require('express');
 var colors = require('colors');
+var fs = require('fs');
 var router = express.Router();
 const request = require('request');
 const appRoot = require('app-root-path');
@@ -34,6 +35,48 @@ router.post('/descripe', function (req, res, next) {
     // if (!error && response.statusCode == 200) {
       res.send(body)
   });
+});
+
+var describe = function(imageUrl, callback) {
+    var key = process.env.KEY
+    console.log("request with key=".green.bold + key);
+
+    var options = {
+        uri: vision_api_descripe_url,
+        method: 'POST',
+        json: {
+            url: imageUrl
+        },
+        headers: {
+            'content-type': "application/json",
+            'Ocp-Apim-Subscription-Key': key
+        }
+    };
+
+    request(options, function (error, response, body) {
+        // if (!error && response.statusCode == 200) {
+        callback(body);
+        // }
+    });    
+};
+
+router.get('/analyze', function(req, res, next) {
+    var photos = fs.readdirSync('./public/user-photos').filter(function(filename) {
+        return filename.endsWith('.jpg');
+    });
+    var counter = 0;
+    for (var i = 0; i < photos.length; i ++) {
+        console.log('http://52.163.59.105:8080/user-photos/' + photos[i]);
+        describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
+            console.log('described: ' + 'http://52.163.59.105:8080/user-photos/' + photos[i]);
+            res.write(body);
+
+            counter ++;
+            if (counter == photos.length) {
+                res.end();
+            }
+        });
+    }
 });
 
 module.exports = router;
