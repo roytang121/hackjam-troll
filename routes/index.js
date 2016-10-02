@@ -127,10 +127,18 @@ router.get('/analyze', function(req, res, next) {
 
                 for (var j = 0; j < keywords.length; j ++) {
                     if (keywords[j] in freq) {
-                        freq[keywords[j]] ++;
+                        freq[keywords[j]]++;
                     } else {
                         freq[keywords[j]] = 1;
                     }
+                }
+
+                var total = 0;
+                for (var key in freq) {
+                    total += freq[key];
+                }
+                for (var key in freq) {
+                    freq[key] /= total;
                 }
 
                 res.send(JSON.stringify(freq));
@@ -138,5 +146,18 @@ router.get('/analyze', function(req, res, next) {
         });
     }
 });
+
+router.get('/getPhotos', function(req, res, next) {
+    var exec = require('child_process').exec;
+    var cmd = './getPhotos ' + req.body.url;
+
+    exec(cmd, function(error, stdout, stderr) {
+        // command output is in stdout
+        res.send({
+            'result': 'ok'
+        });
+    });
+});
+
 
 module.exports = router;
