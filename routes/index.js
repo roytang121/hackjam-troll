@@ -1,5 +1,6 @@
 var express = require('express');
 var colors = require('colors');
+var fs = require('fs');
 var router = express.Router();
 const request = require('request');
 const appRoot = require('app-root-path');
@@ -37,7 +38,7 @@ router.post('/descripe', function (req, res, next) {
 });
 
 var describe = function(imageUrl, callback) {
-    var key = req.body.key
+    var key = process.env.KEY
     console.log("request with key=".green.bold + key);
 
     var options = {
@@ -63,12 +64,19 @@ router.get('/analyze', function(req, res, next) {
     var photos = fs.readdirSync('./public/user-photos').filter(function(filename) {
         return filename.endsWith('.jpg');
     });
-    res.write(JSON.stringify(photos));
-    // for (var i = 0; i < photos.length; i ++) {
-    //     describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
-    //
-    //     });
-    // }
+    var counter = 0;
+    for (var i = 0; i < photos.length; i ++) {
+        console.log('http://52.163.59.105:8080/user-photos/' + photos[i]);
+        describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
+            console.log('described: ' + 'http://52.163.59.105:8080/user-photos/' + photos[i]);
+            res.write(body);
+
+            counter ++;
+            if (counter == photos.length) {
+                res.end();
+            }
+        });
+    }
 });
 
 module.exports = router;
