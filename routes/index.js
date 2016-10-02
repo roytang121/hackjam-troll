@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/descripe', function (req, res, next) {
 
-  var key = req.body.key
+  var key = process.env.KEY
   console.log("request with key=".green.bold + key);
 
   var imageUrl = req.body.url;
@@ -33,7 +33,6 @@ router.post('/descripe', function (req, res, next) {
   request(options, function (error, response, body) {
     // if (!error && response.statusCode == 200) {
       res.send(body)
-    // }
   });
 });
 
