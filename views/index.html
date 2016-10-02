@@ -41,7 +41,7 @@
 
       <div class="row" style="margin-top: 30px;">
         <center>
-          <svg width="960" height="500"></svg>
+          <svg width="960" height="500" id="svg"></svg>
         </center>
       </div>
     </div>
@@ -54,6 +54,7 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <script type="text/javascript">
+    $("#svg").hide();
       $('#btn_troll').click(function() {
 
         $(this).html("loading...");
@@ -64,7 +65,7 @@
           fetch('/analyze', options)
           .then(function(response) {
             response.json().then(function (json) {
-              alert(JSON.stringify(json));
+              $("#svg").show();
               $(this).html("Done!");
             }).bind(this);
           })
