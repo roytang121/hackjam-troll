@@ -63,12 +63,12 @@ router.get('/analyze', function(req, res, next) {
     var photos = fs.readdirSync('./public/user-photos').filter(function(filename) {
         return filename.endsWith('.jpg');
     });
-    debugger;
-    for (var i = 0; i < photos.length; i ++) {
-        describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
-
-        });
-    }
+    res.write(JSON.stringify(photos));
+    // for (var i = 0; i < photos.length; i ++) {
+    //     describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
+    //
+    //     });
+    // }
 });
 
 module.exports = router;
