@@ -37,4 +37,39 @@ router.post('/descripe', function (req, res, next) {
   });
 });
 
+var describe = function(imageUrl, callback) {
+    var key = req.body.key
+    console.log("request with key=".green.bold + key);
+
+    var options = {
+        uri: vision_api_descripe_url,
+        method: 'POST',
+        json: {
+            url: imageUrl
+        },
+        headers: {
+            'content-type': "application/json",
+            'Ocp-Apim-Subscription-Key': key
+        }
+    };
+
+    request(options, function (error, response, body) {
+        // if (!error && response.statusCode == 200) {
+        callback(body);
+        // }
+    });    
+};
+
+router.get('/analyze', function(req, res, next) {
+    var photos = fs.readdirSync('./public/user-photos').filter(function(filename) {
+        return filename.endsWith('.jpg');
+    });
+    debugger;
+    for (var i = 0; i < photos.length; i ++) {
+        describe('http://52.163.59.105:8080/user-photos/' + photos[i], function(body) {
+
+        });
+    }
+});
+
 module.exports = router;
