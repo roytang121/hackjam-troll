@@ -2,11 +2,12 @@ var express = require('express');
 var colors = require('colors');
 var router = express.Router();
 const request = require('request');
+const appRoot = require('app-root-path');
 
 var vision_api_descripe_url = "https://api.projectoxford.ai/vision/v1.0/describe?maxCandidates=1&maxCandidates=1"
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.sendFile(appRoot + '/views/index.html')
 });
 
 router.post('/descripe', function (req, res, next) {
